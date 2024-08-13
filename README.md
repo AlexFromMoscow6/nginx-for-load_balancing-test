@@ -1,19 +1,20 @@
-# docker-nginx-hello-world
-Single page docker nginx 
+# Nginx для тестирования балансировки в Docker контейнере
 
+Для тестирования балансировки необходимо поднять минимум 2 контейнера Docker. Для этого необходимо склонировать репозиторий и в корне директории выполнить сборку образа:
 
-NGINX webserver that serves a simple page containing its hostname, IP address and port as wells as the request URI and the local time of the webserver.
-
-The images are uploaded to Docker Hub -- https://hub.docker.com/r/dockerbogo/docker-nginx-hello-world/.
-
-How to run:
 ```
-$ docker run -p 8080:80 -d dockerbogo/docker-nginx-hello-world
+$ docker build -t nginx-for-load-balancing .
 ```
 
-Now, assuming we found out the IP address and the port that mapped to port 80 on the container, in a browser we can make a request to the webserver and get the page below: 
+Далее запустить контейнеры. При запуске каждого нового контейнера обязательно указывайте новое уникальное имя для контейнера и новый порт.
+Запуск двух уникальных контейнеров приведен ниже:
+```
+$ docker run -d --name app1 -p 8081:80 nginx-for-load-balancing
+```
 
-![hello_world](./hello_world.png)
+```
+$ docker run -d --name app2 -p 8082:80 nginx-for-load-balancing
+```
 
 
-Reference: [Docker & Kubernetes](http://bogotobogo.com/DevOps/Docker/Docker_Kubernetes.php)
+
